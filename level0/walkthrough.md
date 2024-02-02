@@ -69,4 +69,16 @@ Okay so after looking at the beginning of the asm code we see this line
 ```
 
 We assume that the first parameters of atoi is argv[1], the value is compared to the hex value 0x1a7 -> 423 in decimal.
-When we launch the program with the arguments we are in a shell 
+When we launch the program with the arguments 423, the program execute a shell
+
+```console
+level0@RainFall:~$ ./level0 423
+$ whoami
+level1
+$ cd /home/user/level1
+$ ls -a
+.  ..  .bash_logout  .bashrc  level1  .pass  .profile
+$ cat .pass
+1fe8a524fa4bec01ca4ea2a869af2a02260d4a7d5fe7e7c24d8617e6dca12d3a
+
+```
