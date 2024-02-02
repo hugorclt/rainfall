@@ -7,7 +7,7 @@ Welcome to the Rainfall Binary Exploitation Project. This project is designed to
 Before starting, ensure you have a virtual machine running a 64-bit operating system. Once you have started your machine with the provided ISO (rainfall.iso) , you should receive a simple prompt with an IP address. Use the following command to SSH into the machine:
 
 ```bash
-ssh level0@192.168.1.13 -p 4242
+ssh level0@localhost -p 4243
 ```
 
 The default login credentials are `level0:level0`.  
