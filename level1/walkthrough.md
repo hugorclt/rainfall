@@ -56,7 +56,6 @@ We will use a Buffer overflow pattern generator to calculate where the programs 
 `https://wiremask.eu/tools/buffer-overflow-pattern-generator/`
 
 Offset value is `76`
-
 We will try to jump to function `run()`, which contains a `system("/bin/sh)`
 
 Address of run function is `0x08048444`
