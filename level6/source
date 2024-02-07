@@ -7,7 +7,7 @@ void n(void)
 
 
 
-void m(void *param_1,int param_2,char *param_3,int param_4,int param_5)
+void m(void)
 
 {
   puts("Nope");
@@ -16,16 +16,16 @@ void m(void *param_1,int param_2,char *param_3,int param_4,int param_5)
 
 
 
-void main(undefined4 param_1,int param_2)
+void main(int argc, char** argv)
 
 {
-  char *__dest;
-  code **ppcVar1;
+  char *str;
+  code **function_ptr;
   
-  __dest = (char *)malloc(0x40);
-  ppcVar1 = (code **)malloc(4);
-  *ppcVar1 = m;
-  strcpy(__dest,*(char **)(param_2 + 4));
-  (**ppcVar1)();
+  str = (char *)malloc(0x40); //64
+  function_ptr = (code **)malloc(4); //4
+  *function_ptr = m;
+  strcpy(str,*(char **)(argv[1]));
+  (**function_ptr)(); // call m
   return;
 }
