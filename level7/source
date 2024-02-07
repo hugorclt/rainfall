@@ -6,34 +6,45 @@ int m()
 
   v0 = time(0);
   return printf("%s - %d\n", c, v0);
+  //lit c et ecrit le timestamp
 }
 
 
 
 int main(int argc, const char **argv, const char **envp)
 {
-  char	*str2;
-  char	*str1;
+  struct	*str2;
+  struct	*str1;
   FILE	*fd;
   
-  str2 = malloc(8);
-  str2[0] = 1;
-
-  str2[1] = malloc(8);
-
   str1 = malloc(8);
-  str1[0] = 2
+  str1[0] = 1;
+  str1[1] = malloc(8);
 
-  str1[1] = malloc(8)
+  str2 = malloc(8);
+  str2[0] = 2
+  str2[1] = malloc(8)
 
-  strcpy( (char *) str2[1], argv[1]);
+  strcpy( (char *) str1[1], argv[1]);
 
-  strcpy((char *)str1[1], argv[2] );
+  strcpy((char *)str2[1], argv[2] );
 
-  fd = fopen("/home/user/level8/.pass","r");
+  fd = fopen("/home/user/level8/.pass","r"); //lit le mot de pass
 
-  fgets(c, 68, fd);
-  puts("~~");
+	////////////////////////////////////
+  fgets(c, 68, fd); //met mdp dans dans c
+
+  puts("~~"); // overwrite call par call de m 
   return 0;
 }
 
+
+struct P {
+	char c
+	int i;
+
+}
+
+[cxxx, i];
+
+[i, c]
