@@ -26,8 +26,8 @@ int __cdecl N::operator-(int a1, int a2)
 
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
-  N *ptr_instance_1; // ebx
-  N *ptr_instance_2; // ebx
+  N *instance_1;
+  N *instance_2;
 
   if ( argc <= 1 )
     _exit(1);
@@ -43,10 +43,10 @@ int __cdecl main(int argc, const char **argv, const char **envp)
 
   N::setAnnotation(instance_1, argv[1]); //ecrit sur instance 2 | ecrire shellcode
   
-  return (**(int (__cdecl ***)(N *, N *))instance_2)(instance_2, instance_1); //function ptr ????
+  // return (**(int (__cdecl ***)(N *, N *))instance_2)(instance_2, instance_1); //function ptr ????
 
   //ghidra version
-  (**(code **)*this_00)(this_00,this);
+  return (**(code **)*instance_2)(instance_2, instance_1);
 }
 
 void main(int param_1,int param_2)
