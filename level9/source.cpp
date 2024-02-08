@@ -1,8 +1,8 @@
 
-void __cdecl N::N(N *this, int a2)
+void __cdecl N::N(N *this, int nb)
 {
   *(_DWORD *)this = off_8048848;
-  *((_DWORD *)this + 26) = a2;
+  *((_DWORD *)this + 26) = nb;
 }
 
 void *__cdecl N::setAnnotation(N *this, char *s)
@@ -26,9 +26,8 @@ int __cdecl N::operator-(int a1, int a2)
 
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
-  N *instance_1; // ebx
-  N *instance_2; // ebx
-  N *instance_3; // [esp+1Ch] [ebp-8h]
+  N *ptr_instance_1; // ebx
+  N *ptr_instance_2; // ebx
 
   if ( argc <= 1 )
     _exit(1);
@@ -37,22 +36,31 @@ int __cdecl main(int argc, const char **argv, const char **envp)
   instance_1 = new N(12);
   N::N(instance_1, 5);
 
-  instance_3 = instance_1; //meme ptr
 
   // init 2
   instance_2 = new N(12);
   N::N(instance_2, 6);
 
-  N::setAnnotation(instance_3, argv[1]); //ecrit sur instance 2 | ecrire shellcode
+  N::setAnnotation(instance_1, argv[1]); //ecrit sur instance 2 | ecrire shellcode
   
-  return (**(int (__cdecl ***)(N *, N *))instance_2)(instance_2, instance_3); //function ptr ???? jup sur instance 2
+  return (**(int (__cdecl ***)(N *, N *))instance_2)(instance_2, instance_1); //function ptr ????
 }
 
-class N
-{
-	param1
-	param2
+void main(int param_1,int param_2)
 
-	this->param1
-	this + 4
-}
+// {
+//   N *this;
+//   undefined4 *this_00;
+  
+//   if (param_1 < 2) {
+//                     // WARNING: Subroutine does not return
+//     _exit(1);
+//   }
+//   this = (N *)operator_new(0x6c);
+//   N::N(this,5);
+//   this_00 = (undefined4 *)operator_new(0x6c);
+//   N::N((N *)this_00,6);
+//   N::setAnnotation(this,*(char **)(param_2 + 4));
+//   (**(code **)*this_00)(this_00,this);
+//   return;
+// }
