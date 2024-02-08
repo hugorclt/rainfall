@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdint.h>
+
+typedef uint32_t _DWORD;   // DWORD = unsigned 32 bit value
+typedef uint16_t _WORD;    // WORD = unsigned 16 bit value
+typedef uint8_t _BYTE;     // BYTE = unsigned 8 bit value
+
+
+char *auth; // idb
+int service; // weak
+
+int main(int argc, const char **argv, const char **envp)
+{
+  char str[5]; // [esp+20h] [ebp-88h] BYREF
+  char v5[2]; // [esp+25h] [ebp-83h] BYREF
+  char v6[129]; // [esp+27h] [ebp-81h] BYREF
+
+  while ( 1 ) //Boucle infinie de lecture
+  {
+    printf("%p, %p \n", auth, (const void *)service); //print address of service and what is after service
+    if ( !fgets(str, 128, stdin) )	// lit 120 chars on stdin into str
+      break;						//quit if fail
+    if ( !memcmp(str, "auth ", 5u) )	//copy "auth" into str, returns dest (=str)
+    {									//enter if str == NULL ??
+      auth = (char *)malloc(4u);
+      *(_DWORD *)auth = 0;
+      if ( strlen(v5) <= 30 )
+        strcpy(auth, v5);
+    }
+    if ( !memcmp(str, "reset", 5u) )
+      free(auth);
+    if ( !memcmp(str, "service", 6u) )
+      service = (int)strdup(v6);
+    if ( !memcmp(str, "login", 5u) )
+    {
+      if ( *((_DWORD *)auth + 8) )
+        system("/bin/sh");
+      else
+        fwrite("Password:\n", 1u, 10, stdout);
+    }
+  }
+  return 0;
+}
