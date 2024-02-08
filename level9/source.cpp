@@ -7,10 +7,10 @@ void __cdecl N::N(N *this, int a2)
 
 void *__cdecl N::setAnnotation(N *this, char *s)
 {
-  size_t v2; // eax
+  size_t len_input; // eax
 
-  v2 = strlen(s);
-  return memcpy((char *)this + 4, s, v2);
+  len_input = strlen(s);
+  return memcpy((char *)this + 4, s, len_input);
 }
 
 int __cdecl N::operator+(int a1, int a2)
@@ -26,21 +26,33 @@ int __cdecl N::operator-(int a1, int a2)
 
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
-  N *v3; // ebx
-  N *v4; // ebx
-  N *v6; // [esp+1Ch] [ebp-8h]
+  N *instance_1; // ebx
+  N *instance_2; // ebx
+  N *instance_3; // [esp+1Ch] [ebp-8h]
 
   if ( argc <= 1 )
     _exit(1);
 
-  v3 = new N(12);
-  N::N(v3, 5);
-  v6 = v3;
+  // init 1
+  instance_1 = new N(12);
+  N::N(instance_1, 5);
 
-  v4 = new N(12);
-  N::N(v4, 6);
+  instance_3 = instance_1; //meme ptr
 
-  N::setAnnotation(v6, argv[1]);
+  // init 2
+  instance_2 = new N(12);
+  N::N(instance_2, 6);
+
+  N::setAnnotation(instance_3, argv[1]); //ecrit sur instance 2 | ecrire shellcode
   
-  return (**(int (__cdecl ***)(N *, N *))v4)(v4, v6);
+  return (**(int (__cdecl ***)(N *, N *))instance_2)(instance_2, instance_3); //function ptr ???? jup sur instance 2
+}
+
+class N
+{
+	param1
+	param2
+
+	this->param1
+	this + 4
 }
