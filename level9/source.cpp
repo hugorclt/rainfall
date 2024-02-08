@@ -44,6 +44,9 @@ int __cdecl main(int argc, const char **argv, const char **envp)
   N::setAnnotation(instance_1, argv[1]); //ecrit sur instance 2 | ecrire shellcode
   
   return (**(int (__cdecl ***)(N *, N *))instance_2)(instance_2, instance_1); //function ptr ????
+
+  //ghidra version
+  (**(code **)*this_00)(this_00,this);
 }
 
 void main(int param_1,int param_2)
