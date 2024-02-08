@@ -12,32 +12,43 @@ int service; // weak
 int main(int argc, const char **argv, const char **envp)
 {
   char str[5]; // [esp+20h] [ebp-88h] BYREF
-  char v5[2]; // [esp+25h] [ebp-83h] BYREF
-  char v6[129]; // [esp+27h] [ebp-81h] BYREF
+  char buffer1[2]; // [esp+25h] [ebp-83h] BYREF
+  char bufffer2[129]; // [esp+27h] [ebp-81h] BYREF
 
   while ( 1 ) //Boucle infinie de lecture
   {
-    printf("%p, %p \n", auth, (const void *)service); //print address of service and what is after service
+    printf("%p, %p \n", auth, (const void *)service); //print address of auth et service
     if ( !fgets(str, 128, stdin) )	// lit 120 chars on stdin into str
       break;						//quit if fail
-    if ( !memcmp(str, "auth ", 5u) )	//copy "auth" into str, returns dest (=str)
-    {									//enter if str == NULL ??
-      auth = (char *)malloc(4u);
-      *(_DWORD *)auth = 0;
-      if ( strlen(v5) <= 30 )
-        strcpy(auth, v5);
+
+
+    if ( !memcmp(str, "auth ", 5u) )
+    {
+      auth = malloc(4u);
+      auth[0] = 0;
+      if ( strlen(buffer1) <= 30 )
+        strcpy(auth, buffer1);
     }
+
+
     if ( !memcmp(str, "reset", 5u) )
       free(auth);
+
+
+	  
     if ( !memcmp(str, "service", 6u) )
-      service = (int)strdup(v6);
+      service = (int)strdup(bufffer2);
+
+
     if ( !memcmp(str, "login", 5u) )
     {
-      if ( *((_DWORD *)auth + 8) )
+      if ( *((_DWORD *)auth + 8) ) //auth[8 * 4]
         system("/bin/sh");
       else
         fwrite("Password:\n", 1u, 10, stdout);
     }
+
+
   }
   return 0;
 }
