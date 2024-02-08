@@ -1,7 +1,3 @@
-```bash
-(gdb) run < <(python -c 'print ("auth " + "\x01")')
-```
-
 ### Payload
 
 We have to write a character on auth + 8 on the heap, auth is a 4bytes address so we have to write
