@@ -1,30 +1,30 @@
-char *__cdecl p(char *dest, char *s)
+char *__cdecl p(char *input, char *tiret)
 {
-  char buf[4104]; // [esp+10h] [ebp-1008h] BYREF
+  char buffer[4104]; // [esp+10h] [ebp-1008h] BYREF
 
-  puts(s);
-  read(0, buf, 4096);
-  *strchr(buf, 10) = 0;
-  return strncpy(dest, buf, 20);
+  puts(tiret);
+  read(STDIN, buffer, 4096); //read 4096 dans buffer size 4104, no overflow
+  *strchr(buffer, 10) = 0;
+  return strncpy(input, buffer, 20);
 }
 
-char *__cdecl pp(char *dest)
+char *__cdecl pp(char *buffer)
 {
-  char src[20]; // [esp+28h] [ebp-30h] BYREF
-  char v3[28]; // [esp+3Ch] [ebp-1Ch] BYREF
+  char intput_1[20]; // [esp+28h] [ebp-30h] BYREF
+  char input_2[28]; // [esp+3Ch] [ebp-1Ch] BYREF
 
-  p(src, " - ");
-  p(v3, " - ");
-  strcpy(dest, src);
-  *(_WORD *)&dest[strlen(dest)] = unk_80486A4; //'\0' ?
-  return strcat(dest, v3);
+  p(intput_1, " - ");
+  p(input_2, " - ");
+  strcpy(buffer, intput_1);
+  *(_WORD *)&buffer[strlen(buffer)] = unk_80486A4; //'\0' ?
+  return strcat(dest, input_2);
 }
 
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
-  char s[42]; // [esp+16h] [ebp-2Ah] BYREF
+  char buffer[42]; // [esp+16h] [ebp-2Ah] BYREF
 
-  pp(s);
-  puts(s);
+  pp(buffer);
+  puts(buffer);
   return 0;
 }
