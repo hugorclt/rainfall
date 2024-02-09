@@ -4,8 +4,8 @@ char *__cdecl p(char *input, char *tiret)
 
   puts(tiret);
   read(STDIN, buffer, 4096); //read 4096 dans buffer size 4104, no overflow
-  *strchr(buffer, 10) = 0;
-  return strncpy(input, buffer, 20);
+  *strchr(buffer, '\n') = 0; //pose null sur \n
+  return strncpy(input, buffer, 20); //copy 20 characters de buffer dans input
 }
 
 char *__cdecl pp(char *buffer)
@@ -15,9 +15,9 @@ char *__cdecl pp(char *buffer)
 
   p(intput_1, " - ");
   p(input_2, " - ");
-  strcpy(buffer, intput_1);
-  *(_WORD *)&buffer[strlen(buffer)] = unk_80486A4; //'\0' ?
-  return strcat(dest, input_2);
+  strcpy(buffer, intput_1); //copy input1 (input 1 + input 2)
+  *(_WORD *)&buffer[strlen(buffer)] = unk_80486A4; //'\0' ? // pose address of char finale de buffer
+  return strcat(buffer, input_2);
 }
 
 int __cdecl main(int argc, const char **argv, const char **envp)
