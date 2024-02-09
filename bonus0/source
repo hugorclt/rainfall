@@ -13,11 +13,11 @@ char *__cdecl pp(char *buffer)
   char intput_1[20]; // [esp+28h] [ebp-30h] BYREF
   char input_2[28]; // [esp+3Ch] [ebp-1Ch] BYREF
 
-  p(intput_1, " - ");
-  p(input_2, " - ");
-  strcpy(buffer, intput_1); //copy input1 (input 1 + input 2)
-  *(_WORD *)&buffer[strlen(buffer)] = unk_80486A4; //'\0' ? // pose address of char finale de buffer
-  return strcat(buffer, input_2);
+  p(intput_1, " - "); // met 20 chars dans input 1 (last char NULL)
+  p(input_2, " - "); // met 20 chars dans input2 (last char NULL)
+  strcpy(buffer, intput_1); //copy input1 dans buffer
+  *(_WORD *)&buffer[strlen(buffer)] = unk_80486A4; // pose espace entre input 1 et input 2
+  return strcat(buffer, input_2); //ajoute input2 a buffer (ecrase NULL)
 }
 
 int __cdecl main(int argc, const char **argv, const char **envp)
