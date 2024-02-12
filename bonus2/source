@@ -1,24 +1,24 @@
 int language; // weak
 //----- (08048484) --------------------------------------------------------
-int __cdecl greetuser(char src)
+int __cdecl greetuser(char cpy_dest)
 {
-  __int128 dest; // [esp+10h] [ebp-48h] BYREF
-  __int16 v3; // [esp+20h] [ebp-38h]
-  char v4; // [esp+22h] [ebp-36h]
+  __int128 dest; // [esp+10h] [ebp-48h] BYREF	//char*
+  __int16 v3; // [esp+20h] [ebp-38h]			//jamais lu
+  char v4; // [esp+22h] [ebp-36h]				//jamais lu??
 
   switch ( language )
   {
     case 1:
-      strcpy((char *)&dest, "Hyvää päivää ");
+      strcpy((char *)&dest, "Hyvää päivää ");	//size 13
       break;
     case 2:
-      strcpy((char *)&dest, "Goedemiddag! ");
+      strcpy((char *)&dest, "Goedemiddag! ");	//size 13
       break;
     case 0:
-      strcpy((char *)&dest, "Hello ");
+      strcpy((char *)&dest, "Hello ");			// size 6
       break;
   }
-  strcat((char *)&dest, &src);
+  strcat((char *)&dest, &cpy_dest);					//overflow ici
   return puts((const char *)&dest);
 }
 // 8048717: using guessed type __int128 xmmword_8048717;
@@ -52,6 +52,5 @@ int __cdecl main(int argc, const char **argv, const char **envp)
 
   qmemcpy(cpy_dest, dest, sizeof(cpy_dest));	//pas d'overflow
 
-  
   return greetuser(cpy_dest[0]);
 }
