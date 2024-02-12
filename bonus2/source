@@ -9,9 +9,7 @@ int __cdecl greetuser(char src)
   switch ( language )
   {
     case 1:
-      dest = xmmword_8048717;
-      v3 = *((_WORD *)&xmmword_8048717 + 8);
-      v4 = *((_BYTE *)&xmmword_8048717 + 18);
+      strcpy((char *)&dest, "Hyvää päivää ");
       break;
     case 2:
       strcpy((char *)&dest, "Goedemiddag! ");
