@@ -36,9 +36,10 @@ int __cdecl main(int argc, const char **argv, const char **envp)
   if ( argc != 3 )
     return 1;
   memset(dest, 0, sizeof(dest));
-  strncpy(dest, argv[1], 40);
-  strncpy(&dest[40], argv[2], 32); //40 + 32 = 72 can't overflow dest here
-  lang_env = getenv("LANG");
+  strncpy(dest, argv[1], 40);		//copy 40 de av[1] dans dest
+  strncpy(&dest[40], argv[2], 32);	//copy 32 de av[2] dans dest | 40 + 32 = 72 can't overflow dest here
+  lang_env = getenv("LANG");		// !!
+
   if ( lang_env )
   {
     if ( !memcmp(lang_env, "fi", 2) )
@@ -50,6 +51,9 @@ int __cdecl main(int argc, const char **argv, const char **envp)
       language = 2;
     }
   }
-  qmemcpy(cpy_dest, dest, sizeof(cpy_dest));
+
+  qmemcpy(cpy_dest, dest, sizeof(cpy_dest));	//pas d'overflow
+
+  
   return greetuser(cpy_dest[0]);
 }
