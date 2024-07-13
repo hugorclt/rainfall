@@ -3,7 +3,7 @@
 ## Overview
 The Rainfall project is a series of challenges designed to test and improve your cybersecurity skills. Each level presents a unique set of challenges that require you to analyze, exploit, and solve various vulnerabilities in a controlled environment.
 
-## Project Structure
+## Project Structures
 The repository follows a specific structure to organize the challenges and associated resources:
 
 Each level directory contains the following:
